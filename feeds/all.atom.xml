@@ -1,5 +1,158 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>bitbeat比特共振</title><link href="/" rel="alternate"></link><link href="/feeds/all.atom.xml" rel="self"></link><id>/</id><updated>2019-03-19T00:43:58+08:00</updated><entry><title>羽毛球基本功</title><link href="/yu-mao-qiu-ji-ben-gong.html" rel="alternate"></link><published>2019-03-19T00:00:00+08:00</published><updated>2019-03-19T00:43:58+08:00</updated><author><name>ax</name></author><id>tag:None,2019-03-19:/yu-mao-qiu-ji-ben-gong.html</id><summary type="html">&lt;p&gt;基本功一定要打扎实，否则每一次运动都是在强化错误&lt;/p&gt;</summary><content type="html">&lt;p&gt;基本功做好了，才能越打越好。&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>bitbeat比特共振</title><link href="/" rel="alternate"></link><link href="/feeds/all.atom.xml" rel="self"></link><id>/</id><updated>2019-03-20T00:00:00+08:00</updated><entry><title>pyenv的安装使用，兼谈工作习惯</title><link href="/pyenvde-an-zhuang-shi-yong-jian-tan-gong-zuo-xi-guan.html" rel="alternate"></link><published>2019-03-20T00:00:00+08:00</published><updated>2019-03-19T11:08:02+08:00</updated><author><name>ax</name></author><id>tag:None,2019-03-20:/pyenvde-an-zhuang-shi-yong-jian-tan-gong-zuo-xi-guan.html</id><summary type="html">&lt;p&gt;灵活地使用兵力这件事，是战场指挥的中心任务，也是最不容易做好的&lt;/p&gt;</summary><content type="html">&lt;p&gt;人脑非常容易犯错，人脑也非常容易遗忘，而有时脑子是既遗忘又犯错。所以，一切的工具的使用，都应尽全力减少人犯错的机会，以及降低人的记忆负担。因为我们的时间很宝贵，在排查错误，调试环境等不重要的任务上消耗的时间越多，我们在重要任务上的时间投入就越少。&lt;/p&gt;
+&lt;h1&gt;虚拟环境的必要&lt;/h1&gt;
+&lt;p&gt;我长期忽视虚拟环境的必要和作用，尤其是python环境，觉得配置环境也就多敲击几次命令而已，最多用python2和python3区分一下就好。其实我是错误的。如果这件事情真没有必要，就不会有VMWare这样的商业公司去做虚拟机。而github上的virtualbox，pyenv等项目就不会持续有人投入。&lt;/p&gt;
+&lt;p&gt;虚拟环境的好处，一是不同用户的环境互不影响，二是一次配置，永久受益，节约时间。因为不可能只有一台服务器，每台机器总有一些软件硬件区别。虚拟环境的好处就是尽可能减少这些环境因素的干扰。只要使用的库的版本号一致，就能保证得到相同的运行环境。这大大简化了调试错误时候的分析过程。&lt;/p&gt;
+&lt;h1&gt;pyenv的使用&lt;/h1&gt;
+&lt;p&gt;pyenv和virtualenv是目前python环境管理的两大工具。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;安装&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;linux: git clone https://github.com/pyenv/pyenv.git ~/.pyenv &lt;/p&gt;
+&lt;p&gt;mac: brew install pyenv&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;设置环境变量&lt;/strong&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;echo &amp;#39;export PYENV_ROOT=&amp;quot;$HOME/.pyenv&amp;quot;&amp;#39; &amp;gt;&amp;gt; ~/.bash_profile
+echo &amp;#39;export PATH=&amp;quot;$PYENV_ROOT/bin:$PATH&amp;quot;&amp;#39; &amp;gt;&amp;gt; ~/.bash_profile
+echo -e &amp;#39;if command -v pyenv 1&amp;gt;/dev/null 2&amp;gt;&amp;amp;1; then\n eval &amp;quot;$(pyenv init -)&amp;quot;\nfi&amp;#39; &amp;gt;&amp;gt; ~/.bash_profile
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;blockquote&gt;
+&lt;p&gt;官方文件说如果是ubuntu/fedora, 则使用~/.bashrc文件。但我发现，当登录的服务器是通过中间服务器跳转的情况下，pyenv的环境变量不能全部正常工作，导致python可以正常使用，但pip不能正常映射。必须两者都是正常的才能正常工作。所以遇到这种情况下，两个文件都试一下。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;strong&gt;安装依赖的库文件&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;pyenv是下载源代码，在机器上现场编译生成目标。
+linux下的解决方案复杂一些。以ubuntu为例&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo apt-get update
+sudo apt-get install -y make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev  xz-utils tk-dev libffi-dev liblzma-dev python-openssl git
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;详细请见 &lt;a href="https://github.com/pyenv/pyenv/wiki/common-build-problems"&gt;官方构建故障解决说明&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;安装指定python版本&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;pyenv install 3.6.6&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;耐心等待下载源代码和编译，安装成功之后，进入想要使用该版本的目录，执行&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;pyenv local 3.6.6&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;当前目录以及其所有子目录均会使用 3.6.6版本。所用的版本记录在当前目录.python-version文件中。&lt;/p&gt;
+&lt;p&gt;分别使用 python 和 pip --version 查看是否是设定的版本。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;使用&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;直接用pip和python即可，不需要pip3和python3。&lt;/p&gt;
+&lt;h1&gt;supervisor的使用&lt;/h1&gt;
+&lt;p&gt;适用情况： 自己编写的程序，需要对外持续提供稳定的网络服务。又不想弄复杂的框架，又不想使用专门的负载均衡服务。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;正规的商用服务，服务器本身要有容灾备份服务器，服务程序本身，必须是部署多份，分到不同的物理机器上，以免一台损坏，全部完蛋。目前也有多VM 和 多Docker的方法，但思路是一样的。同样分布式的话，就需要负载均衡（Load Balancer）&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;那么这种情况下，就非常适合 supervisor。而且其 可以转储标准输出和标准错误输出的内容到对应的文件中。非常方便。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;安装&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;mac:  brew install supervisor&lt;/p&gt;
+&lt;p&gt;linux:  sudo apt install supervisor&lt;/p&gt;
+&lt;p&gt;没有必要用pip安装 &lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;配置文件和关键选项&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;默认配置文件： /etc/supervisor/supervisord.conf&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;;调用其他的配置文件
+[includes]
+files = relative/directory/*.conf [conf2] [conf3] 
+; 可以写多个配置文件, 用空格隔开, 全部用就绝对路径
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;项目配置文件，只需要保留[program]字段&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;[program:改成具体的服务名称]&lt;/span&gt;
+&lt;span class="na"&gt;command&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;  &lt;span class="s"&gt;; 写上具体的命令&lt;/span&gt;
+&lt;span class="na"&gt;directory ; 运行时所处目录 &lt;/span&gt;
+&lt;span class="na"&gt;autostart&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;true &lt;/span&gt;
+&lt;span class="na"&gt;autorestart&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;unexpect ; 设置为true则可以自动重启&lt;/span&gt;
+&lt;span class="na"&gt;startretries&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;3   ; 设置为0则,只启动一次。 不会尝试继续启动&lt;/span&gt;
+&lt;span class="na"&gt;stdout_logfile&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;/a/path        ; 不设置则输出到默认位置，一般为/var/log/supervisor/下&lt;/span&gt;
+&lt;span class="na"&gt;stdout_logfile_maxbytes&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;1MB   ; max # logfile bytes b4 rotation (default 50MB)&lt;/span&gt;
+&lt;span class="na"&gt;stdout_logfile_backups&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;10     ; # of stdout logfile backups (default 10)&lt;/span&gt;
+&lt;span class="na"&gt;stderr_logfile&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;/a/path        ; 同stdout&lt;/span&gt;
+&lt;span class="na"&gt;stderr_logfile_maxbytes&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;1MB   ; max # logfile bytes b4 rotation (default 50MB)&lt;/span&gt;
+&lt;span class="na"&gt;stderr_logfile_backups&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;10     ; # of stderr logfile backups (default 10)&lt;/span&gt;
+
+&lt;span class="na"&gt;environment&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;A=&amp;quot;1&amp;quot;,B=&amp;quot;2&amp;quot;       ; process environment additions (def no adds)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;注意 source, type 这样的属于bash内置命令，放在command内是无法执行成功。所有的命令也要写绝对路径。&lt;/li&gt;
+&lt;li&gt;directory 必须写，写绝对路径，cwd会以此为准。&lt;/li&gt;
+&lt;li&gt;注意！以非交互方式启动，所以bash环境变量全部不可读，需要配置环境变量一定写在environment里面。&lt;/li&gt;
+&lt;li&gt;日志文件必须设置绝对路径，且包含文件名。否则不会生成目录&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;supervisorctl -c 配置文件 (status|start|stop) program_name&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;常见问题&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;unix:///var/run/supervisor.sock no such file。可能是配置文件全部错误了，没有任何一个进程启动成功。检查配置文件。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;不建议用supervisor执行一次来保存运行过程中的输入和错误输出，不如&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;直接用 nohup 配合管道符是更好的方法&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;nohup 命令 参数  1 &amp;gt; stdout.log 2 &amp;gt; stderr.log &amp;amp;
+或者
+nohup 命令 参数  &amp;gt; total.log 2&amp;gt;&amp;amp;1 &amp;amp;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;不要用用户自己的配置文件来启动&lt;/p&gt;
+&lt;h1&gt;工作习惯和纪律&lt;/h1&gt;
+&lt;p&gt;事实上，我们的工作时间，有不少是浪费在了以下的事情上：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;使用自己模块的产品挂掉了，要协助排查原因，结果没有日志，无法复现&lt;/li&gt;
+&lt;li&gt;使用自己模块的产品挂掉了，要证明不是自己的原因，结果没有日志，无法复现&lt;/li&gt;
+&lt;li&gt;查找某个文档但是找不到在哪里了；&lt;/li&gt;
+&lt;li&gt;查找某个功能参数的含义和取值范围；&lt;/li&gt;
+&lt;li&gt;查找某个设计文档里面的一两句说明；&lt;/li&gt;
+&lt;li&gt;配置好了某一个工具包，然后没有记录配置方法，等下一次配置的时候又要重新查资料；&lt;/li&gt;
+&lt;li&gt;服务器意外重启了却不记得有哪些后台服务程序需要启动，也不记得这些服务的源代码部署的位置；&lt;/li&gt;
+&lt;li&gt;发现某个服务有了故障，但是日志却没有保留；&lt;/li&gt;
+&lt;li&gt;统计汇总信息时，记不清楚自己名下的服务器资源有哪些，以及这些服务器的登录密钥等信息&lt;/li&gt;
+&lt;li&gt;服务器上提供的服务垮掉了，没有信息通知，也没有自动重启机制来保护&lt;/li&gt;
+&lt;li&gt;……&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;根据大家的行业不同，这个清单可以很长很长。基本都是因为 1 遗忘了 2 犯错了。 然而这些事情完全不足以提升能力，但足以消耗士气，浪费工作时间。所以为什么不提前做好准备呢？为什么一定要乱糟糟的呢？&lt;/p&gt;
+&lt;p&gt;以下就是我归纳出来的一些应该遵守的纪律：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;无论任何工程，一定要写Makefile&lt;/strong&gt;，所有的操作，如测试，运行，启动或终止服务，全部写入Makefile中。写不下的用shell脚本记录，然后用Makefile调用。负责的项目越多，越不可能把所有参数都记住的。Makefile中的记录是保证你不被遗忘的洪水冲走之前的最后一道铁闸。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;一定要写readme.md文件&lt;/strong&gt;。注意，Makefile保留的是操作，而此处交代的是本项目的来龙去脉，设计思路，注意事项，对外接口，参数说明。此文件需要做版本管理。这是属于你的救生艇加救生衣。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;一定要有文件写明依赖的库和版本&lt;/strong&gt;，如果不知道，就以当前稳定运行的环境为准。例如python程序一定要写requirements.txt文件，写明所依赖的第三方库。其格式如下&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;flask
+requests
+pymysql
+redis==2.10.6
+jieba
+sklearn
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;推荐在Makefile里面用install指令&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;install&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+    &lt;span class="n"&gt;pip&lt;/span&gt; &lt;span class="n"&gt;install&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;r&lt;/span&gt; &lt;span class="n"&gt;requirements&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;txt&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;将所有依赖库全部安装。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;功能相关的东西要放在一起&lt;/strong&gt;， &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;按照维护的项目，给每个项目一个文件夹，里面存储所有相关的资料。聊天信息里面有相关的内容，也要尽快收纳到对应的文件夹中。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;做模型计算时候，获取资源的sql脚本，清洗数据的代码，每一次尝试的参数，试验结果的重要记录等，均要放在一起。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;最常用的功能一定要放在最快查找到的地方&lt;/strong&gt; &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;最常用的代码形成代码库&lt;/li&gt;
+&lt;li&gt;聊天软件，近期要用到的内容要置顶， &lt;/li&gt;
+&lt;li&gt;最近几日定下的来日程要订闹钟&lt;/li&gt;
+&lt;li&gt;常常访问网站添加到收件夹，最好按公司分类&lt;/li&gt;
+&lt;li&gt;利用hosts文件，将工作中常常要用的短域名和ip地址写入，用短域名访问，省时间。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1&gt;结语&lt;/h1&gt;
+&lt;p&gt;“灵活地使用兵力这件事，是战争指挥的中心任务，也是最不容易做好的。……一切都是为了争取战斗的胜利”。所有的规则都是可以重新组合的，一切都是为了保障我们重要目标的成功。&lt;/p&gt;</content><category term="计算机"></category></entry><entry><title>羽毛球基本功</title><link href="/yu-mao-qiu-ji-ben-gong.html" rel="alternate"></link><published>2019-03-19T00:00:00+08:00</published><updated>2019-03-19T00:43:58+08:00</updated><author><name>ax</name></author><id>tag:None,2019-03-19:/yu-mao-qiu-ji-ben-gong.html</id><summary type="html">&lt;p&gt;基本功一定要打扎实，否则每一次运动都是在强化错误&lt;/p&gt;</summary><content type="html">&lt;p&gt;基本功做好了，才能越打越好。&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;握拍细节&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;从球拍的底面看过去，是一个八边形，如果让拍子水平放置，但让拍面垂直于地面，则此时拍柄的截面，是个在垂直方向上被拉长的八边形。（建议在纸上画出这个形状），有两条长边和短边，还有四个侧棱。&lt;/p&gt;
 &lt;p&gt;拍子放置好之后，站在拍子的后方，像握手一样伸出右手。&lt;/p&gt;

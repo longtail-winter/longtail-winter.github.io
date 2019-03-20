@@ -24,48 +24,183 @@
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="/yu-mao-qiu-ji-ben-gong.html">羽毛球基本功</a></h1>
+                    <h1 class="entry-title"><a href="/pyenvde-an-zhuang-shi-yong-jian-tan-gong-zuo-xi-guan.html">pyenv的安装使用，兼谈工作习惯</a></h1>
 <footer class="post-info">
-        <span>二 19 三月 2019</span>
-<span>| tags: <a href="/tag/yun-dong-fang-fa.html">运动方法</a></span>
-</footer><!-- /.post-info --><p>基本功做好了，才能越打越好。</p>
-<p><strong>握拍细节</strong></p>
-<p>从球拍的底面看过去，是一个八边形，如果让拍子水平放置，但让拍面垂直于地面，则此时拍柄的截面，是个在垂直方向上被拉长的八边形。（建议在纸上画出这个形状），有两条长边和短边，还有四个侧棱。</p>
-<p>拍子放置好之后，站在拍子的后方，像握手一样伸出右手。</p>
-<p>右手的后三个手指弯曲锁住球拍，拇指和食指不接触拍柄。注意，抓牢，但是不要抓紧，三个手指和握把之间是能赛进入一根手指头的。此时，挥动一下球拍，球拍仍然是稳定的。测试标准是：用左手拽不出球拍。</p>
-<p>食指贴在八边形的右侧长边上，拇指的内侧贴在八边形的左侧侧棱上。两个手指是捏合，而不是紧握。注意，这两个手指的配合可以旋转球拍的拍面。一定要做到。</p>
-<p>正手姿态时，食指在前，拇指在后。反手时相反，且拇指要顶住拍柄。</p>
-<p>目前的这种握拍方式，是实战总结出的，无论是进攻还是防守都可以迅速应对的一种方式。要牢记，最重要的是放松，如果手握的太紧，一来小臂很容易累，二来不好发力，三很不灵活。必须反复强化形成习惯。</p>
-<p>训练方法1：握拍，手腕转动划八字，分为正向和反向转动。
-训练方法2：握拍，拍面向前，向上伸直胳臂，练习从最高点下来的压手腕动作，食指要用力。
-训练方法3：反手姿态，向前弹出球拍，手握松和手握紧的情况下，能明显感觉到前者的力量更足。</p>
-<p><strong>挥拍细节</strong>
-要想出球有力，必须腿，腰，肩，肘，手腕，手指全部配合起来。</p>
+        <span>三 20 三月 2019</span>
+<span>| tags: <a href="/tag/ji-suan-ji.html">计算机</a></span>
+</footer><!-- /.post-info --><p>人脑非常容易犯错，人脑也非常容易遗忘，而有时脑子是既遗忘又犯错。所以，一切的工具的使用，都应尽全力减少人犯错的机会，以及降低人的记忆负担。因为我们的时间很宝贵，在排查错误，调试环境等不重要的任务上消耗的时间越多，我们在重要任务上的时间投入就越少。</p>
+<h1>虚拟环境的必要</h1>
+<p>我长期忽视虚拟环境的必要和作用，尤其是python环境，觉得配置环境也就多敲击几次命令而已，最多用python2和python3区分一下就好。其实我是错误的。如果这件事情真没有必要，就不会有VMWare这样的商业公司去做虚拟机。而github上的virtualbox，pyenv等项目就不会持续有人投入。</p>
+<p>虚拟环境的好处，一是不同用户的环境互不影响，二是一次配置，永久受益，节约时间。因为不可能只有一台服务器，每台机器总有一些软件硬件区别。虚拟环境的好处就是尽可能减少这些环境因素的干扰。只要使用的库的版本号一致，就能保证得到相同的运行环境。这大大简化了调试错误时候的分析过程。</p>
+<h1>pyenv的使用</h1>
+<p>pyenv和virtualenv是目前python环境管理的两大工具。</p>
+<p><strong>安装</strong></p>
+<p>linux: git clone https://github.com/pyenv/pyenv.git ~/.pyenv </p>
+<p>mac: brew install pyenv</p>
+<p><strong>设置环境变量</strong></p>
+<div class="highlight"><pre><span></span>echo &#39;export PYENV_ROOT=&quot;$HOME/.pyenv&quot;&#39; &gt;&gt; ~/.bash_profile
+echo &#39;export PATH=&quot;$PYENV_ROOT/bin:$PATH&quot;&#39; &gt;&gt; ~/.bash_profile
+echo -e &#39;if command -v pyenv 1&gt;/dev/null 2&gt;&amp;1; then\n eval &quot;$(pyenv init -)&quot;\nfi&#39; &gt;&gt; ~/.bash_profile
+</pre></div>
+
+
+<blockquote>
+<p>官方文件说如果是ubuntu/fedora, 则使用~/.bashrc文件。但我发现，当登录的服务器是通过中间服务器跳转的情况下，pyenv的环境变量不能全部正常工作，导致python可以正常使用，但pip不能正常映射。必须两者都是正常的才能正常工作。所以遇到这种情况下，两个文件都试一下。</p>
+</blockquote>
+<p><strong>安装依赖的库文件</strong></p>
+<p>pyenv是下载源代码，在机器上现场编译生成目标。
+linux下的解决方案复杂一些。以ubuntu为例</p>
+<div class="highlight"><pre><span></span>sudo apt-get update
+sudo apt-get install -y make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev  xz-utils tk-dev libffi-dev liblzma-dev python-openssl git
+</pre></div>
+
+
+<p>详细请见 <a href="https://github.com/pyenv/pyenv/wiki/common-build-problems">官方构建故障解决说明</a></p>
+<p><strong>安装指定python版本</strong></p>
+<p><code>pyenv install 3.6.6</code></p>
+<p>耐心等待下载源代码和编译，安装成功之后，进入想要使用该版本的目录，执行</p>
+<p><code>pyenv local 3.6.6</code></p>
+<p>当前目录以及其所有子目录均会使用 3.6.6版本。所用的版本记录在当前目录.python-version文件中。</p>
+<p>分别使用 python 和 pip --version 查看是否是设定的版本。</p>
+<p><strong>使用</strong></p>
+<p>直接用pip和python即可，不需要pip3和python3。</p>
+<h1>supervisor的使用</h1>
+<p>适用情况： 自己编写的程序，需要对外持续提供稳定的网络服务。又不想弄复杂的框架，又不想使用专门的负载均衡服务。</p>
+<blockquote>
+<p>正规的商用服务，服务器本身要有容灾备份服务器，服务程序本身，必须是部署多份，分到不同的物理机器上，以免一台损坏，全部完蛋。目前也有多VM 和 多Docker的方法，但思路是一样的。同样分布式的话，就需要负载均衡（Load Balancer）</p>
+</blockquote>
+<p>那么这种情况下，就非常适合 supervisor。而且其 可以转储标准输出和标准错误输出的内容到对应的文件中。非常方便。</p>
+<p><strong>安装</strong></p>
+<p>mac:  brew install supervisor</p>
+<p>linux:  sudo apt install supervisor</p>
+<p>没有必要用pip安装 </p>
+<p><strong>配置文件和关键选项</strong></p>
+<p>默认配置文件： /etc/supervisor/supervisord.conf</p>
+<div class="highlight"><pre><span></span>;调用其他的配置文件
+[includes]
+files = relative/directory/*.conf [conf2] [conf3] 
+; 可以写多个配置文件, 用空格隔开, 全部用就绝对路径
+</pre></div>
+
+
+<p>项目配置文件，只需要保留[program]字段</p>
+<div class="highlight"><pre><span></span><span class="k">[program:改成具体的服务名称]</span>
+<span class="na">command</span><span class="o">=</span>  <span class="s">; 写上具体的命令</span>
+<span class="na">directory ; 运行时所处目录 </span>
+<span class="na">autostart</span> <span class="o">=</span> <span class="s">true </span>
+<span class="na">autorestart</span> <span class="o">=</span> <span class="s">unexpect ; 设置为true则可以自动重启</span>
+<span class="na">startretries</span> <span class="o">=</span> <span class="s">3   ; 设置为0则,只启动一次。 不会尝试继续启动</span>
+<span class="na">stdout_logfile</span><span class="o">=</span><span class="s">/a/path        ; 不设置则输出到默认位置，一般为/var/log/supervisor/下</span>
+<span class="na">stdout_logfile_maxbytes</span><span class="o">=</span><span class="s">1MB   ; max # logfile bytes b4 rotation (default 50MB)</span>
+<span class="na">stdout_logfile_backups</span><span class="o">=</span><span class="s">10     ; # of stdout logfile backups (default 10)</span>
+<span class="na">stderr_logfile</span><span class="o">=</span><span class="s">/a/path        ; 同stdout</span>
+<span class="na">stderr_logfile_maxbytes</span><span class="o">=</span><span class="s">1MB   ; max # logfile bytes b4 rotation (default 50MB)</span>
+<span class="na">stderr_logfile_backups</span><span class="o">=</span><span class="s">10     ; # of stderr logfile backups (default 10)</span>
+
+<span class="na">environment</span><span class="o">=</span><span class="s">A=&quot;1&quot;,B=&quot;2&quot;       ; process environment additions (def no adds)</span>
+</pre></div>
+
+
+<blockquote>
 <ul>
-<li>左手举高，右脚后撤半步，自然出现侧身预备姿势，此时自然左肩高于右肩膀，注意胸部展开，不要弓背含胸。</li>
-<li>来球时，腰旋转，上身随即旋转，尽可能的抬高右手肘部，此时拍子自然藏于背后，直到竖直向下的状态（初学时使用）</li>
-<li>保持肘部稳定，发力抽动球拍。在最高点时，整条手臂必须是直的，不能明显弯曲。</li>
-<li>击球前一瞬间手发力握紧球拍，食指压拍。</li>
-<li>保证是球拍面的最前面击球。</li>
-<li>击出后随惯性自然摆动下来，右脚向前迈出一步。同时手放松</li>
+<li>注意 source, type 这样的属于bash内置命令，放在command内是无法执行成功。所有的命令也要写绝对路径。</li>
+<li>directory 必须写，写绝对路径，cwd会以此为准。</li>
+<li>注意！以非交互方式启动，所以bash环境变量全部不可读，需要配置环境变量一定写在environment里面。</li>
+<li>日志文件必须设置绝对路径，且包含文件名。否则不会生成目录</li>
 </ul>
-<p>注意练习时，球拍面始终是正向前的。</p>
-<p><strong>上身肌肉</strong></p>
-<p>三头肌最长的那一片，称为“长头”。要拉伸此块肌肉，并增强其力量。向上伸直胳膊，手掌面向前，然后向左侧弯曲肘部，保证小臂仍然是竖直向上的。右手经过头后，摸到左肩膀。</p>
-<p>活动范围越大，越能发出大力量。</p>
-<p><strong>腿部肌肉</strong></p>
-<p>训练方法：需要练习深蹲，强化股四头肌肉，更强的耐力，决定后半段的优势。而且，上身的挥拍动作并不累，累的是来回的奔跑。</p>
-<p>热身活动，屈膝，左右旋转膝盖，转动脚踝。</p>
-<p><strong>步法</strong></p>
-<p>一定要微微屈膝。如果始终是站直的状态，则应对对方来球时，需要增加一个屈膝降低重心的动作，才能迈出步子。</p>
-<p><strong>站位</strong></p>
-<p>位于场地的中央，后退一步到底线，前进一步到前场（不是网前）的位置最合适。</p>
-<p><strong>肌肉放松方法</strong></p>
-<p>主要是小臂肌肉，需要现场教学。可以借鉴腓肠肌的拉伸动作。</p>                </article>
+</blockquote>
+<p>supervisorctl -c 配置文件 (status|start|stop) program_name</p>
+<p><strong>常见问题</strong></p>
+<ul>
+<li>
+<p>unix:///var/run/supervisor.sock no such file。可能是配置文件全部错误了，没有任何一个进程启动成功。检查配置文件。</p>
+</li>
+<li>
+<p>不建议用supervisor执行一次来保存运行过程中的输入和错误输出，不如</p>
+</li>
+</ul>
+<p>直接用 nohup 配合管道符是更好的方法</p>
+<div class="highlight"><pre><span></span>nohup 命令 参数  1 &gt; stdout.log 2 &gt; stderr.log &amp;
+或者
+nohup 命令 参数  &gt; total.log 2&gt;&amp;1 &amp;
+</pre></div>
+
+
+<p>不要用用户自己的配置文件来启动</p>
+<h1>工作习惯和纪律</h1>
+<p>事实上，我们的工作时间，有不少是浪费在了以下的事情上：</p>
+<ul>
+<li>使用自己模块的产品挂掉了，要协助排查原因，结果没有日志，无法复现</li>
+<li>使用自己模块的产品挂掉了，要证明不是自己的原因，结果没有日志，无法复现</li>
+<li>查找某个文档但是找不到在哪里了；</li>
+<li>查找某个功能参数的含义和取值范围；</li>
+<li>查找某个设计文档里面的一两句说明；</li>
+<li>配置好了某一个工具包，然后没有记录配置方法，等下一次配置的时候又要重新查资料；</li>
+<li>服务器意外重启了却不记得有哪些后台服务程序需要启动，也不记得这些服务的源代码部署的位置；</li>
+<li>发现某个服务有了故障，但是日志却没有保留；</li>
+<li>统计汇总信息时，记不清楚自己名下的服务器资源有哪些，以及这些服务器的登录密钥等信息</li>
+<li>服务器上提供的服务垮掉了，没有信息通知，也没有自动重启机制来保护</li>
+<li>……</li>
+</ul>
+<p>根据大家的行业不同，这个清单可以很长很长。基本都是因为 1 遗忘了 2 犯错了。 然而这些事情完全不足以提升能力，但足以消耗士气，浪费工作时间。所以为什么不提前做好准备呢？为什么一定要乱糟糟的呢？</p>
+<p>以下就是我归纳出来的一些应该遵守的纪律：</p>
+<p><strong>无论任何工程，一定要写Makefile</strong>，所有的操作，如测试，运行，启动或终止服务，全部写入Makefile中。写不下的用shell脚本记录，然后用Makefile调用。负责的项目越多，越不可能把所有参数都记住的。Makefile中的记录是保证你不被遗忘的洪水冲走之前的最后一道铁闸。</p>
+<p><strong>一定要写readme.md文件</strong>。注意，Makefile保留的是操作，而此处交代的是本项目的来龙去脉，设计思路，注意事项，对外接口，参数说明。此文件需要做版本管理。这是属于你的救生艇加救生衣。</p>
+<p><strong>一定要有文件写明依赖的库和版本</strong>，如果不知道，就以当前稳定运行的环境为准。例如python程序一定要写requirements.txt文件，写明所依赖的第三方库。其格式如下</p>
+<div class="highlight"><pre><span></span>flask
+requests
+pymysql
+redis==2.10.6
+jieba
+sklearn
+</pre></div>
+
+
+<p>推荐在Makefile里面用install指令</p>
+<div class="highlight"><pre><span></span><span class="n">install</span><span class="o">:</span>
+    <span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">r</span> <span class="n">requirements</span><span class="o">.</span><span class="na">txt</span>
+</pre></div>
+
+
+<p>将所有依赖库全部安装。</p>
+<p><strong>功能相关的东西要放在一起</strong>， </p>
+<ul>
+<li>
+<p>按照维护的项目，给每个项目一个文件夹，里面存储所有相关的资料。聊天信息里面有相关的内容，也要尽快收纳到对应的文件夹中。</p>
+</li>
+<li>
+<p>做模型计算时候，获取资源的sql脚本，清洗数据的代码，每一次尝试的参数，试验结果的重要记录等，均要放在一起。</p>
+</li>
+</ul>
+<p><strong>最常用的功能一定要放在最快查找到的地方</strong> </p>
+<ul>
+<li>最常用的代码形成代码库</li>
+<li>聊天软件，近期要用到的内容要置顶， </li>
+<li>最近几日定下的来日程要订闹钟</li>
+<li>常常访问网站添加到收件夹，最好按公司分类</li>
+<li>利用hosts文件，将工作中常常要用的短域名和ip地址写入，用短域名访问，省时间。</li>
+</ul>
+<h1>结语</h1>
+<p>“灵活地使用兵力这件事，是战争指挥的中心任务，也是最不容易做好的。……一切都是为了争取战斗的胜利”。所有的规则都是可以重新组合的，一切都是为了保障我们重要目标的成功。</p>                </article>
             </aside><!-- /#featured -->
                 <section id="content" class="body">
                     <h1>Other articles</h1>
                     <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/yu-mao-qiu-ji-ben-gong.html" rel="bookmark"
+                           title="Permalink to 羽毛球基本功">羽毛球基本功</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <span>二 19 三月 2019</span>
+<span>| tags: <a href="/tag/yun-dong-fang-fa.html">运动方法</a></span>
+</footer><!-- /.post-info -->                <p>基本功一定要打扎实，否则每一次运动都是在强化错误</p>
+                <a class="readmore" href="/yu-mao-qiu-ji-ben-gong.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
 
             <li><article class="hentry">
                 <header>
