@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom"><title>bitbeat比特共振</title><link href="/" rel="alternate"></link><link href="/feeds/all.atom.xml" rel="self"></link><id>/</id><updated>2019-03-20T00:00:00+08:00</updated><entry><title>pyenv的安装使用，兼谈工作习惯</title><link href="/pyenvde-an-zhuang-shi-yong-jian-tan-gong-zuo-xi-guan.html" rel="alternate"></link><published>2019-03-20T00:00:00+08:00</published><updated>2019-03-19T11:08:02+08:00</updated><author><name>ax</name></author><id>tag:None,2019-03-20:/pyenvde-an-zhuang-shi-yong-jian-tan-gong-zuo-xi-guan.html</id><summary type="html">&lt;p&gt;灵活地使用兵力这件事，是战场指挥的中心任务，也是最不容易做好的&lt;/p&gt;</summary><content type="html">&lt;p&gt;人脑非常容易犯错，人脑也非常容易遗忘，而有时脑子是既遗忘又犯错。所以，一切的工具的使用，都应尽全力减少人犯错的机会，以及降低人的记忆负担。因为我们的时间很宝贵，在排查错误，调试环境等不重要的任务上消耗的时间越多，我们在重要任务上的时间投入就越少。&lt;/p&gt;
 &lt;h1&gt;虚拟环境的必要&lt;/h1&gt;
-&lt;p&gt;我长期忽视虚拟环境的必要和作用，尤其是python环境，觉得配置环境也就多敲击几次命令而已，最多用python2和python3区分一下就好。其实我是错误的。如果这件事情真没有必要，就不会有VMWare这样的商业公司去做虚拟机。而github上的virtualbox，pyenv等项目就不会持续有人投入。&lt;/p&gt;
+&lt;p&gt;我长期忽视虚拟环境的必要和作用，尤其是python环境，觉得配置环境也就多敲击几次命令而已，最多用python2和python3区分一下就好。其实我是错误的。如果这件事情真没有必要，就不会有VMWare这样的商业公司去做虚拟机。而virtualbox，pyenv等项目也不会持续有人投入。&lt;/p&gt;
 &lt;p&gt;虚拟环境的好处，一是不同用户的环境互不影响，二是一次配置，永久受益，节约时间。因为不可能只有一台服务器，每台机器总有一些软件硬件区别。虚拟环境的好处就是尽可能减少这些环境因素的干扰。只要使用的库的版本号一致，就能保证得到相同的运行环境。这大大简化了调试错误时候的分析过程。&lt;/p&gt;
 &lt;h1&gt;pyenv的使用&lt;/h1&gt;
 &lt;p&gt;pyenv和virtualenv是目前python环境管理的两大工具。&lt;/p&gt;
